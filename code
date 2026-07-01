@@ -1,0 +1,66 @@
+import heapq
+
+graph=[]
+node_count=0
+
+INF=10 ** 18
+
+def init(N,K,sBuilding,eBuilding,mDistance):
+    global graph,node_count
+    
+    node_count=N
+    
+    graph=[[]for _ in range (N)]
+    
+    for i in range (k):
+        start=sBuidling[i]
+        end=eBuilding[i]
+        distance = mDistance[i]
+        graph[start].append((end,distance))
+        graph[end].append((start,distance))
+
+def add (sBuilding,eBuidling,mDistance):
+    graph[sBuilding].append((eBuilding,mDistance))
+    graph[eBuidling].append((sBuilding,mDistance))
+def multi_source_djikstra(sources,limit ):
+    distances =[INF]*node_count
+    heap=[]
+    for source in sources:
+        if distances[source]!=0:
+            distances[source]=0
+            heapq.heappush(heap,(0,source))
+    while heap:
+        current_distance , current=heapq.heappop(heap)
+        if current_distance!=distances[current]:
+            continue
+        if current_distance>limit:
+            break
+        for next_building,road_distance in [graph[current]]:
+            next_distance=current_distance +road_distance
+            if (new_distance<=limit and new_distance<distances[next_building]):
+                distances[next_building,new_distance]
+                heapq.heappush(heap,(new_distance,next_building))
+    return distances
+def calculate(M,mcoffee,P,mbakery,R):
+    coffee_distance=multi_source_djikstra(mcoffee,R)
+    bakery_distance=multi_source_djikstra(mbakery,R)
+    
+    is_store=bytearray(node_count)
+    
+    for building in mcoffee:
+        is_store[building]=1
+    for building in mbakery:
+        is_store[building]=1
+    answer =INF
+    
+    for building in range (node_count):
+        if is_store [building]:
+            continue
+        if(coffee_distance[building]<=R and bakery_distance[building]<=R):
+            total_distance =(coffee_distance[building]+ bakery_distance[building])
+            if total_distance <answer:
+                answer=total_distance
+    if answer==INF:
+        return -1
+    return answer
+      
